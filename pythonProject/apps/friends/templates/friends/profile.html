@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+</head>
+<body>
+   
+    <h2> Here is a list of your friends {{ user.name }} </h2>
+    <table border=1>
+        <tr>
+            <th>Alias</th>
+            <th>Action</th>
+        </tr>
+            {% for friendship in friends %}
+                <tr>
+                    <td>{{ friendship.friend.alias }}</td>
+                    <td>
+                    <form style="display: inline-block;" action="/remove/{{friendship.friend.id}}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Unfriend">
+                    </form>
+                    <form style="display: inline-block;" action="/info/{{friendship.friend.id}}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="View Profile">
+                    </form>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    <h3>Other people you may know</h3>
+    <table border=1>
+        <tr>
+            <th>Alias</th>
+            <th>Action</th>
+        </tr>
+         {% for person in not_friends %}
+            <tr>
+                <td><a href="/add/{{person.id}}">{{person.alias}}</a></td>
+                <td>
+                    <form action="/add/{{person.id}}" method="post">
+                        {% csrf_token %}
+                    <input type="submit" value="Add Friend">
+                    </form>
+                </td>
+            </tr>
+        {%endfor%}
+    </table><br>
+  <a href="/"><Button>Logout</Button></a>
+</body>
+</html>
